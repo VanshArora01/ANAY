@@ -134,20 +134,21 @@ class SystemControl:
             return False, f"Failed to open URL: {e}"
     
     def play_spotify_song(self, song_name: str, artist_name: str = ""):
-        """INSTANT Spotify playback - opens in your existing browser!"""
+        """FULLY AUTOMATED Spotify playback - uses optimized Selenium!"""
         try:
+            from automation.spotify_automation import SpotifyAutomation
+            spotify = SpotifyAutomation()
+            success, message = spotify.play_song(song_name, artist_name)
+            logger.info(f"Spotify automation: {message}")
+            return success, message
+        except Exception as e:
+            logger.error(f"Spotify automation failed: {e}")
+            # Fallback to simple URL opening
             import webbrowser
-            # Build search query
             query = f"{song_name} {artist_name}".strip().replace(" ", "+")
             url = f"https://open.spotify.com/search/{query}"
-            
-            logger.info(f"Opening Spotify search for: {song_name} {artist_name}")
             webbrowser.open(url)
-            
-            return True, f"Now playing: {song_name} {artist_name}"
-        except Exception as e:
-            logger.error(f"Spotify opening failed: {e}")
-            return False, f"Failed to play: {str(e)}"
+            return True, f"Opened Spotify for: {song_name}"
     
     def play_youtube_video(self, video_name: str):
         """Fully automated YouTube playback with Selenium!"""

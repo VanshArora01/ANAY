@@ -36,12 +36,9 @@ class BrowserAgent:
         if self.mode != "advanced": return False
         
         try:
-            options = self.webdriver.ChromeOptions()
-            options.add_argument("--start-maximized")
-            # Don't detach so we can control it
-            options.add_experimental_option("detach", True)
-            
-            service = self.Service(self.ChromeDriverManager().install())
+            from automation.selenium_utils import DriverFactory
+            options = DriverFactory.create_chrome_options(remote_debug=False) # General browsing usually not remote
+            service = DriverFactory.get_service()
             self.driver = self.webdriver.Chrome(service=service, options=options)
             self.is_setup = True
             return True
