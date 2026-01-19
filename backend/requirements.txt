@@ -11,7 +11,7 @@ python-multipart==0.0.6
 psutil==5.9.6
 openai==1.12.0
 pydub==0.25.1
-av==12.0.0
+# av==12.0.0 (Removed to avoid system dependency issues on Render)
 pillow==10.2.0
 
 # Local-only dependencies (Ignored on Render)
