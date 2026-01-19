@@ -104,7 +104,7 @@ const Connect = () => {
               <Button
                 variant="outline"
                 className="justify-start"
-                onClick={() => window.open('http://localhost:8000/health', '_blank')}
+                onClick={() => window.open('https://anay-backend.onrender.com/', '_blank')}
               >
                 <Globe className="w-4 h-4 mr-2" />
                 Health Check
@@ -112,7 +112,7 @@ const Connect = () => {
               <Button
                 variant="outline"
                 className="justify-start"
-                onClick={() => window.open('http://localhost:8000/docs', '_blank')}
+                onClick={() => window.open('https://anay-backend.onrender.com/docs', '_blank')}
               >
                 <Link className="w-4 h-4 mr-2" />
                 API Docs
