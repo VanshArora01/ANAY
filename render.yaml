@@ -30,7 +30,7 @@ services:
     env: static
     buildCommand: npm install && npm run build
     publishPath: dist
-    rootDirectory: anay-your-ai-companion
+    rootDirectory: frontend
     envVars:
       - key: VITE_API_URL
         fromService:
