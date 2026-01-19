@@ -78,6 +78,16 @@ def calculate_amplitude(base64_audio: str) -> float:
     except Exception:
         return 0.5  # Default mid-level if calculation fails
 
+def is_greeting(text: str) -> bool:
+    """Check if the message is a simple greeting to skip task planning."""
+    greetings = [
+        "hi", "hello", "hey", "kesa hai", "ki haal", "namaste", 
+        "sat sri akal", "good morning", "good afternoon", "good evening",
+        "/start", "/hello", "yo", "kaise ho", "kya haal hai"
+    ]
+    cleaned = text.lower().strip().replace("?", "").replace("!", "")
+    return any(greet in cleaned for greet in greetings) or len(cleaned) < 3
+
 class WebSocketManager:
     """Manages WebSocket connections and coordinates STT, LLM, and TTS."""
     
@@ -344,9 +354,9 @@ class WebSocketManager:
                     task_executed = False
                     task_result = ""
                     
-                    # Skip task planning for special commands
-                    if transcript.strip().lower() in ["/start", "/hello", "/hi"]:
-                        logger.info(f"[SKIP] Special command detected, skipping task planner: {transcript}")
+                    # Skip task planning for special commands and greetings
+                    if is_greeting(transcript):
+                        logger.info(f"[SKIP] Greeting/Special command detected, skipping task planner: {transcript}")
                         task_executed = False
                     else:
                         try:
@@ -563,9 +573,13 @@ class WebSocketManager:
                         is_executed = False
                         ai_response = ""
                         try:
-                            from automation.task_planner import TaskPlanner
-                            planner = TaskPlanner(llm_client=active_llm)
-                            plan_result = await planner.execute_plan(user_message)
+                            if is_greeting(user_message):
+                                logger.info(f"[SKIP] Text greeting detected: {user_message}")
+                                plan_result = "NO_ACTION_REQUIRED"
+                            else:
+                                from automation.task_planner import TaskPlanner
+                                planner = TaskPlanner(llm_client=active_llm)
+                                plan_result = await planner.execute_plan(user_message)
                             
                             if plan_result != "NO_ACTION_REQUIRED":
                                 ai_response = plan_result

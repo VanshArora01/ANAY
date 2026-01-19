@@ -268,9 +268,8 @@ class TaskPlanner:
 
         except Exception as e:
             logger.error(f"Planning failed/Parsing failed: {e}")
-            logger.error(f"Failed Text: {response_text if 'response_text' in locals() else 'None'}")
             # Return signal to trigger conversational response instead of returning JSON
-            return {"steps": [], "_error": True}
+            return "NO_ACTION_REQUIRED"
 
     def _run_tool(self, tool_name: str, action: str, params: Dict):
         """Dynamic dispatch to tools."""
