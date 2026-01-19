@@ -53,16 +53,19 @@ const SystemMetrics = ({ isOnline = true }: SystemMetricsProps) => {
   return (
     <div className="anay-panel h-full flex flex-col bg-[#050505] border-[#1a1a1a] overflow-hidden">
       {/* Header */}
-      <div className="p-3 flex items-center justify-between flex-shrink-0">
-        <div className="flex items-center gap-2">
-          <div className="w-1.5 h-3 bg-primary/40 rounded-sm" />
-          <h2 className="font-orbitron text-[10px] md:text-xs tracking-widest text-[#00f5d4] font-bold uppercase">
-            SYSTEM METRICS
+      <div className="p-4 border-b border-white/5 flex items-center justify-between flex-shrink-0 bg-white/[0.02]">
+        <div className="flex items-center gap-2.5">
+          <div className="relative">
+            <div className="w-2 h-2 bg-primary rounded-full animate-pulse-slow" />
+            <div className="absolute inset-0 bg-primary/40 rounded-full blur-[2px] animate-pulse" />
+          </div>
+          <h2 className="font-orbitron text-[10px] md:text-xs tracking-[0.3em] text-white font-black uppercase">
+            CORE TELEMETRY
           </h2>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-anay-green' : 'bg-destructive'}`} />
-          <span className="text-[9px] font-orbitron text-foreground/40 font-bold tracking-widest uppercase">
+        <div className="flex items-center gap-2 px-2 py-1 rounded-md bg-white/[0.03] border border-white/5">
+          <div className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-anay-green shadow-[0_0_8px_#00f5d4]' : 'bg-destructive shadow-[0_0_8px_#ef4444]'}`} />
+          <span className={`text-[8px] font-orbitron font-black tracking-widest ${isOnline ? 'text-anay-green' : 'text-red-400'}`}>
             {isOnline ? 'ONLINE' : 'OFFLINE'}
           </span>
         </div>
