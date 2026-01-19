@@ -56,6 +56,12 @@ desktop.ini
 # Logs
 logs/
 *.log
+anay_backend.log
+
+# API Keys & Sensitive Data
+api.txt
+.env
+.env.*
 
 # Temporary files
 *.tmp

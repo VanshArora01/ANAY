@@ -1,8 +1,7 @@
-pyaudio==0.2.14
+# Core dependencies
 deepgram-sdk==3.4.0
 google-generativeai==0.3.2
 elevenlabs==0.2.27
-pygame==2.5.2
 python-dotenv==1.0.0
 requests==2.31.0
 fastapi==0.104.1
@@ -13,9 +12,13 @@ psutil==5.9.6
 openai==1.12.0
 pydub==0.25.1
 av==12.0.0
-pyautogui==0.9.54
-selenium==4.16.0
-webdriver-manager==4.0.1
 pillow==10.2.0
-keyboard==0.13.5
-mouse==0.7.1
+
+# Local-only dependencies (Ignored on Render)
+# pyaudio==0.2.14
+# pygame==2.5.2
+# pyautogui==0.9.54
+# selenium==4.16.0
+# webdriver-manager==4.0.1
+# keyboard==0.13.5
+# mouse==0.7.1

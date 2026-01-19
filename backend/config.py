@@ -8,6 +8,10 @@ load_dotenv()
 # Read API keys from api.txt file
 def read_api_keys():
     """Read API keys from api.txt file in the parent directory."""
+    # Only try to read if not in production environment
+    if os.getenv("RENDER") or os.getenv("ENV") == "production":
+        return {}
+
     api_file = Path(__file__).parent.parent / "api.txt"
     api_keys = {}
     
@@ -26,6 +30,8 @@ def read_api_keys():
                         api_keys['ELEVENLABS_API_KEY'] = value
                     elif key == "OpenAI":
                         api_keys['OPENAI_API_KEY'] = value
+                    elif key == "Groq":
+                        api_keys['GROQ_API_KEY'] = value
         except Exception as e:
             print(f"Warning: Could not read api.txt: {e}")
     
@@ -51,8 +57,8 @@ ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY") or file_api_keys.get("ELEVE
 
 # Server Configuration
 SERVER_HOST = os.getenv("SERVER_HOST", "0.0.0.0")
-SERVER_PORT = int(os.getenv("SERVER_PORT", "8000"))
-CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:8080,http://localhost:5173").split(",")
+SERVER_PORT = int(os.getenv("PORT", os.getenv("SERVER_PORT", "8000")))
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:8080,http://localhost:5173,https://anay-ai.onrender.com").split(",")
 
 # AI Configuration
 MAX_CONTEXT_MESSAGES = 20
