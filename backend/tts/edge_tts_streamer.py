@@ -4,7 +4,10 @@ Free and Unlimited TTS using Microsoft Edge neural voices.
 """
 import asyncio
 import logging
-import edge_tts
+try:
+    import edge_tts
+except ImportError:
+    edge_tts = None
 from typing import AsyncGenerator
 
 logger = logging.getLogger(__name__)
@@ -38,6 +41,10 @@ class EdgeTTSStreamer:
             return
             
         try:
+            if edge_tts is None:
+                logger.error("edge_tts package not installed. Skipping synthesis.")
+                return
+
             communicate = edge_tts.Communicate(text, self.voice)
             
             # Buffer chunks to reduce network overhead and choppiness

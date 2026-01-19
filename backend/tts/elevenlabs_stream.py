@@ -5,7 +5,10 @@ Real-time audio streaming via WebSocket API
 import os
 import asyncio
 import logging
-import aiohttp
+try:
+    import aiohttp
+except ImportError:
+    aiohttp = None
 import json
 from typing import AsyncGenerator
 
@@ -64,6 +67,10 @@ class ElevenLabsStreamer:
         }
         
         try:
+            if aiohttp is None:
+                logger.error("aiohttp package not installed. Skipping synthesis.")
+                return
+            
             async with aiohttp.ClientSession() as session:
                 async with session.post(url, json=data, headers=headers) as response:
                     if response.status != 200:
