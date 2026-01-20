@@ -66,7 +66,7 @@ const NavigationBar = ({ activeTab, onTabChange, isOnline }: NavigationBarProps)
           )}
         </div>
         <div className="h-4 w-[1px] bg-white/10 hidden md:block" />
-        <span className="text-[10px] md:text-xs font-light text-muted-foreground tracking-[0.2em] hidden md:block uppercase opacity-50">
+        <span className="text-[10px] md:text-xs font-light text-white tracking-[0.2em] hidden md:block uppercase opacity-50">
           Personal Assistant v2.0
         </span>
       </div>
