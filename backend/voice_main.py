@@ -6,7 +6,7 @@ import asyncio
 import time
 import logging
 from speech_to_text import SpeechToText
-from gemini_llm import GeminiLLM
+from groq_llm import GroqLLM
 from tts.elevenlabs_stream import ElevenLabsStreamer
 import os
 from dotenv import load_dotenv
@@ -32,7 +32,7 @@ RECORD_SECONDS = 5  # Record in 5-second chunks
 class VoiceAssistant:
     def __init__(self):
         self.stt = SpeechToText()
-        self.llm = GeminiLLM()
+        self.llm = GroqLLM()
         self.tts = ElevenLabsStreamer(os.getenv('ELEVENLABS_API_KEY'))
         self.audio = pyaudio.PyAudio()
         

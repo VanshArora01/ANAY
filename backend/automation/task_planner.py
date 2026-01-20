@@ -237,20 +237,16 @@ class TaskPlanner:
         system_prompt = system_prompt.replace("<<CONTEXT>>", context_str)
         
         try:
-            # Call LLM
+            # Call LLM with planning prompt
+            # update_memory=False is CRITICAL to prevent JSON poisoning in chat history
             user_msg = f"User Request: {prompt}\nJSON Plan:"
+            response_text = await asyncio.to_thread(
+                self.llm.generate_response, 
+                user_msg, 
+                system_prompt=system_prompt, 
+                update_memory=False
+            )
             
-            # Check capabilities
-            import inspect
-            sig = inspect.signature(self.llm.generate_response)
-            if 'system_prompt' in sig.parameters:
-                response_text = await asyncio.to_thread(self.llm.generate_response, user_msg, system_prompt=system_prompt)
-            else:
-                response_text = await asyncio.to_thread(self.llm.generate_response, f"{system_prompt}\n\n{user_msg}")
-            
-            # Don't log raw output to prevent any leakage
-            # logger.info(f"Raw Planner Output: {response_text}")
-
             # Robust JSON Extraction - extract ONLY the JSON part
             # 1. Strip Markdown
             clean_text = response_text.replace("```json", "").replace("```", "").strip()

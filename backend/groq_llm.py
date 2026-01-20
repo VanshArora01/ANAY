@@ -57,7 +57,7 @@ class GroqLLM:
 
         logger.info(f"Groq LLM initialized ({model_name})")
     
-    def generate_response(self, user_message: str, system_prompt: Optional[str] = None) -> str:
+    def generate_response(self, user_message: str, system_prompt: Optional[str] = None, update_memory: bool = True) -> str:
         """Generate AI response with Groq."""
         try:
             # Special handling for /start command
@@ -73,14 +73,15 @@ class GroqLLM:
                     greeting = "Good evening"
                     hindi = "शुभ संध्या"
                 
-                self.memory.clear() # Clear memory on /start
+                if update_memory:
+                    self.memory.clear() # Clear memory on /start
                 return f"Aur yaar, kesa hai? {hindi}! {greeting}! Main yahi hu tere liye. Bata kya kaam hai? 😎"
             
             if not self.client:
-                return "I apologize, but the Groq API key is missing. I've switched to Gemini for now. How can I help you?"
+                return "I apologize, but the Groq API key is missing. Contact support!"
 
             # Regular conversation
-            if not system_prompt:
+            if update_memory and not system_prompt:
                 self.memory.add_user_message(user_message)
             
             # Simple approach: Build messages for Groq
@@ -88,6 +89,7 @@ class GroqLLM:
             messages = [{"role": "system", "content": effective_system}]
             
             # Add context from memory ONLY if it's a conversation (no custom system prompt)
+            # OR if we explicitly want to use memory for planning (though usually not)
             if not system_prompt:
                 for msg in self.memory.history[-5:]:  # Last 5 messages for speed/context
                     role = "user" if msg["role"] == "user" else "assistant"
@@ -106,7 +108,7 @@ class GroqLLM:
             ai_response = chat_completion.choices[0].message.content.strip()
             
             # Update memory only for normal chat
-            if not system_prompt:
+            if update_memory and not system_prompt:
                 self.memory.add_assistant_message(ai_response)
             
             return ai_response

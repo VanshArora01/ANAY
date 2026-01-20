@@ -17,7 +17,7 @@ from typing import Optional
 
 from audio_input import AudioRecorder
 from speech_to_text import SpeechToText
-from gemini_llm import GeminiLLM
+from groq_llm import GroqLLM
 from text_to_speech import TextToSpeech
 from audio_output import AudioPlayer
 
@@ -66,8 +66,8 @@ class ConversationalAI:
         # 2. Speech-to-Text (Deepgram API)
         self.stt = SpeechToText()
         
-        # 3. AI Processing (Gemini API)
-        self.gemini_llm = GeminiLLM()
+        # 3. AI Processing (Groq API)
+        self.active_llm = GroqLLM()
         
         # 4. Text-to-Speech (Eleven Labs API)
         self.tts = TextToSpeech()
@@ -125,7 +125,7 @@ class ConversationalAI:
                 logger.info("🤖 Step 3: Generating AI response (Gemini API)...")
                 response_start = time.time()
                 
-                ai_response = self.gemini_llm.generate_response(transcript)
+                ai_response = self.active_llm.generate_response(transcript)
                 response_time = time.time() - response_start
                 
                 logger.info(f"✅ Response generated ({response_time:.2f}s): {ai_response[:100]}...")
@@ -195,7 +195,7 @@ class ConversationalAI:
         logger.info("Following the complete pipeline:")
         logger.info("  1. PyAudio → Record .wav")
         logger.info("  2. Deepgram API → Transcript")
-        logger.info("  3. Gemini API → Response")
+        logger.info("  3. Groq API → Response")
         logger.info("  4. Eleven Labs API → Speech .wav")
         logger.info("  5. Pygame → Output")
         logger.info("=" * 60)

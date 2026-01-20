@@ -40,11 +40,6 @@ def read_api_keys():
 # Load API keys from file
 file_api_keys = read_api_keys()
 
-# Google Gemini API Configuration
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-
 # OpenAI API Configuration
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") or file_api_keys.get("OPENAI_API_KEY", "")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")

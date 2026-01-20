@@ -9,8 +9,7 @@ import requests
 
 from stt.deepgram_stream import DeepgramStreamer
 from tts.elevenlabs_stream import ElevenLabsStreamer
-from llm.gemini_client import GeminiClient
-from gemini_llm import GeminiLLM
+from groq_llm import GroqLLM
 from groq_llm import GroqLLM
 from tts.edge_tts_streamer import EdgeTTSStreamer
 from memory import ConversationMemory
@@ -174,20 +173,21 @@ class WebSocketManager:
         # Create isolated memory for this session
         session_memory = ConversationMemory()
         
-        # Select and initialize the active LLM for this session
+        # Select and initialize the active LLM for this session (Groq only)
         if fresh_groq_key and len(fresh_groq_key) > 20: 
             try:
                 active_llm = GroqLLM(api_key=fresh_groq_key, memory=session_memory)
                 logger.info("Using Groq as active LLM for this session")
             except Exception as e:
-                logger.error(f"Groq init failed, falling back: {e}")
-                active_llm = GeminiLLM(memory=session_memory)
+                logger.error(f"Groq init failed: {e}")
+                # We could have a local LLM or just fail here if Groq is mandatory
+                raise RuntimeError(f"Failed to initialize Groq LLM: {e}")
         else:
-            active_llm = GeminiLLM(memory=session_memory)
-            logger.info("Using Gemini as active LLM for this session")
+            logger.error("Groq API key missing or invalid. Gemini is disabled.")
+            raise ValueError("GROQ_API_KEY is required.")
         
         # Create a new conversation memory for this WebSocket session
-        # Note: Memory is now handled internally by self.gemini_llm
+        # Note: Memory is now handled internally by self.active_llm
 
         async def on_transcript_callback(transcript: str, is_final: bool):
             """Callback for STT results."""
