@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Users, FileText, Link, Phone } from 'lucide-react';
+import { LayoutDashboard, Users, FileText, Link, Phone, DollarSign } from 'lucide-react';
 
 interface NavigationBarProps {
   activeTab: string;
@@ -13,6 +13,7 @@ const NavigationBar = ({ activeTab, onTabChange, isOnline }: NavigationBarProps)
     { id: 'contacts', label: 'CONTACTS', icon: Users },
     { id: 'notes', label: 'NOTES', icon: FileText },
     { id: 'connect', label: 'CONNECT', icon: Link },
+    { id: 'pricing', label: 'PRICING', icon: DollarSign },
   ];
 
   const statusItems = [

@@ -6,13 +6,16 @@ import SystemMetrics from '@/components/SystemMetrics';
 import CoreSystem from '@/components/CoreSystem';
 import TranscriptPanel from '@/components/TranscriptPanel';
 import ChatInput from '@/components/ChatInput';
+import { DesktopNoticeDialog } from '@/components/DesktopNoticeDialog';
 import Contacts from './Contacts';
 import Notes from './Notes';
 import Connect from './Connect';
 import Phone from './Phone';
+import Pricing from './Pricing';
 import { useAnayChat } from '@/hooks/useAnayChat';
 import { useRealtimeVoice } from '@/hooks/useRealtimeVoice';
 import { useToast } from '@/hooks/use-toast';
+
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -119,6 +122,8 @@ const Index = () => {
         return <Connect />;
       case 'phone':
         return <Phone />;
+      case 'pricing':
+        return <Pricing />;
       default:
         // Dashboard view
         return (
@@ -171,6 +176,9 @@ const Index = () => {
 
   return (
     <div className="h-screen w-screen bg-[#020202] text-foreground overflow-hidden flex flex-col p-3 md:p-4 gap-3 font-rajdhani">
+      {/* Desktop Capability Notice Dialog */}
+      <DesktopNoticeDialog />
+
       {/* Top Navigation */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
